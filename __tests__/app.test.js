@@ -10,6 +10,17 @@ afterAll(() => {
   if (db.end) db.end();
 });
 
+describe("Error Tests", () => {
+  test("it should return 404 error message when a request to an invalid endpoint is made", () => {
+    return request(app)
+      .get("/api/topicss")
+      .expect(404)
+      .then((res) => {
+        expect(res.body).toEqual({ msg: "Path not found." });
+      });
+  });
+});
+
 describe("GET /api/topics", () => {
   test("it should return the data and status 200", () => {
     return request(app)
@@ -17,6 +28,7 @@ describe("GET /api/topics", () => {
       .expect(200)
       .then((res) => {
         const topics = res.body;
+        expect(topics.length).toBe(3);
         expect(topics).toBeInstanceOf(Array);
         topics.forEach((topic) => {
           expect(topic).toEqual(
@@ -28,12 +40,16 @@ describe("GET /api/topics", () => {
         });
       });
   });
-  test("it should return 404 error message when a request to an invalid endpoint is made", () => {
+});
+
+describe("GET /api/articles", () => {
+  test("it should return the data and status 200", () => {
     return request(app)
-      .get("/api/topicss")
-      .expect(404)
+      .get("/api/articles")
+      .expect(200)
       .then((res) => {
-        expect(res.body).toEqual({ msg: "Path not found." });
+        const articles = res.body;
+        //console.log(articles);
       });
   });
 });
