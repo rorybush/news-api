@@ -1,5 +1,13 @@
 # Northcoders News API
 
+## Cloning the repo
+
+In order to connect to your database you will need to set up the environment variables. Create two .env files for your project, one for your test database and one for your development database.
+
+In each file, add PGDATABASE=<database_name_here>
+
+Ensure to gitignore these files if they contain sensitive information.
+
 ## Background
 
 We will be building an API for the purpose of accessing application data programmatically. The intention here is to mimic the building of a real world backend service (such as reddit) which should provide this information to the front end architecture.
