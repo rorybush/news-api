@@ -4,6 +4,8 @@
 
 In order to connect to your database you will need to set up the environment variables. Create two .env files for your project, one for your test database and one for your development database.
 
+You can find the databse names in the sql files. Found at ./db/setup.sql.
+
 In each file, add PGDATABASE=<database_name_here>
 
 Ensure to gitignore these files if they contain sensitive information.
