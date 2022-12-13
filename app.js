@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.get("/api/topics", getTopics);
 app.get("/api/articles", getArticles);
-app.get("/api/articles/:article_id", getArticlesById);
+
 app.all("*", handle404Paths);
 
 module.exports = app;
