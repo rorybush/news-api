@@ -1,6 +1,10 @@
 const express = require("express");
 const app = express();
-const { getTopics, getArticles } = require("./controllers/news-controller");
+const {
+  getTopics,
+  getArticles,
+  getArticlesById,
+} = require("./controllers/news-controller");
 const { handle404Paths } = require("./controllers/error.handler");
 
 app.use(express.json());
