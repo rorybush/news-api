@@ -27,8 +27,8 @@ describe("GET /api/topics", () => {
       .get("/api/topics")
       .expect(200)
       .then((res) => {
-        const topics = res.body;
-        expect(topics.length).toBe(3);
+        const { topics } = res.body;
+        expect(topics).toHaveLength(3);
         expect(topics).toBeInstanceOf(Array);
         topics.forEach((topic) => {
           expect(topic).toEqual(
@@ -48,7 +48,9 @@ describe("GET /api/articles", () => {
       .get("/api/articles")
       .expect(200)
       .then((res) => {
-        const articles = res.body;
+        const { articles } = res.body;
+        expect(articles).toBeInstanceOf(Array);
+        expect(articles).toBeSortedBy("created_at", { descending: true });
         articles.forEach((article) => {
           expect(article).toMatchObject({
             article_id: expect.any(Number),
