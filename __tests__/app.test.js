@@ -50,6 +50,7 @@ describe("GET /api/articles", () => {
       .then((res) => {
         const { articles } = res.body;
         expect(articles).toBeInstanceOf(Array);
+        expect(articles).toHaveLength(12);
         expect(articles).toBeSortedBy("created_at", { descending: true });
         articles.forEach((article) => {
           expect(article).toMatchObject({
@@ -62,6 +63,15 @@ describe("GET /api/articles", () => {
             comment_count: expect.any(Number),
           });
         });
+      });
+  });
+  test("it should return the data in descending order", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then((res) => {
+        const { articles } = res.body;
+        expect(articles).toBeSortedBy("created_at", { descending: true });
       });
   });
 });
