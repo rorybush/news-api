@@ -49,7 +49,17 @@ describe("GET /api/articles", () => {
       .expect(200)
       .then((res) => {
         const articles = res.body;
-        //console.log(articles);
+        articles.forEach((article) => {
+          expect(article).toMatchObject({
+            article_id: expect.any(Number),
+            title: expect.any(String),
+            votes: expect.any(Number),
+            topic: expect.any(String),
+            author: expect.any(String),
+            created_at: expect.any(String),
+            comment_count: expect.any(Number),
+          });
+        });
       });
   });
 });
