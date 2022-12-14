@@ -22,3 +22,14 @@ exports.selectArticles = () => {
     return result.rows;
   });
 };
+
+exports.selectArticlesById = (article_id) => {
+  const query = `SELECT * FROM articles WHERE article_id= $1`;
+
+  return db.query(query, [article_id]).then((result) => {
+    if (result.rowCount === 0) {
+      return Promise.reject({ status: 404, msg: "No Article Found." });
+    }
+    return result.rows[0];
+  });
+};
