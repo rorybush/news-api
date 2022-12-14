@@ -93,7 +93,7 @@ describe("GET /api/articles/:article_id", () => {
           votes: 0,
         };
         expect(article).toBeInstanceOf(Object);
-        expect(article).toEqual(result);
+        expect(article).toMatchObject(result);
       });
   });
   test("it should return 404 error and article not found message if no article for that id", () => {
