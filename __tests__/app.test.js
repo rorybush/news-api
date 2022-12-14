@@ -27,8 +27,8 @@ describe("GET /api/topics", () => {
       .get("/api/topics")
       .expect(200)
       .then((res) => {
-        const topics = res.body;
-        expect(topics.length).toBe(3);
+        const { topics } = res.body;
+        expect(topics).toHaveLength(3);
         expect(topics).toBeInstanceOf(Array);
         topics.forEach((topic) => {
           expect(topic).toEqual(
@@ -48,8 +48,68 @@ describe("GET /api/articles", () => {
       .get("/api/articles")
       .expect(200)
       .then((res) => {
-        const articles = res.body;
-        //console.log(articles);
+        const { articles } = res.body;
+        expect(articles).toBeInstanceOf(Array);
+        expect(articles).toHaveLength(12);
+        expect(articles).toBeSortedBy("created_at", { descending: true });
+        articles.forEach((article) => {
+          expect(article).toMatchObject({
+            article_id: expect.any(Number),
+            title: expect.any(String),
+            votes: expect.any(Number),
+            topic: expect.any(String),
+            author: expect.any(String),
+            created_at: expect.any(String),
+            comment_count: expect.any(Number),
+          });
+        });
+      });
+  });
+  test("it should return the data in descending order", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then((res) => {
+        const { articles } = res.body;
+        expect(articles).toBeSortedBy("created_at", { descending: true });
+      });
+  });
+});
+
+describe("GET /api/articles/:article_id", () => {
+  test("it should return the article and status 200", () => {
+    return request(app)
+      .get("/api/articles/2")
+      .expect(200)
+      .then((res) => {
+        const { article } = res.body;
+        const result = {
+          article_id: 2,
+          title: "Sony Vaio; or, The Laptop",
+          topic: "mitch",
+          author: "icellusedkars",
+          body: "Call me Mitchell. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would buy a laptop about a little and see the codey part of the world. It is a way I have of driving off the spleen and regulating the circulation. Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; whenever I find myself involuntarily pausing before coffin warehouses, and bringing up the rear of every funeral I meet; and especially whenever my hypos get such an upper hand of me, that it requires a strong moral principle to prevent me from deliberately stepping into the street, and methodically knocking people’s hats off—then, I account it high time to get to coding as soon as I can. This is my substitute for pistol and ball. With a philosophical flourish Cato throws himself upon his sword; I quietly take to the laptop. There is nothing surprising in this. If they but knew it, almost all men in their degree, some time or other, cherish very nearly the same feelings towards the the Vaio with me.",
+          created_at: "2020-10-16T05:03:00.000Z",
+          votes: 0,
+        };
+        expect(article).toBeInstanceOf(Object);
+        expect(article).toEqual(result);
+      });
+  });
+  test("it should return 404 error and article not found message if no article for that id", () => {
+    return request(app)
+      .get("/api/articles/9999")
+      .expect(404)
+      .then((res) => {
+        expect(res.body).toEqual({ msg: "No Article Found." });
+      });
+  });
+  test("it should return 400 bad request error and invalid article id message", () => {
+    return request(app)
+      .get("/api/articles/bananas")
+      .expect(400)
+      .then((res) => {
+        expect(res.body).toEqual({ msg: "Invalid ID" });
       });
   });
 });
