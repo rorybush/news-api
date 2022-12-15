@@ -44,3 +44,18 @@ exports.selectArticleCommentsById = (article_id) => {
     return result.rows;
   });
 };
+
+exports.insertCommentByArticleId = (article_id, username, body) => {
+  if (!username || !body) {
+    return Promise.reject({
+      status: 400,
+      msg: "Username or Body has not been provided.",
+    });
+  }
+  const query = `
+  INSERT INTO comments (article_id, author, body) 
+  VALUES ($1, $2, $3) 
+  RETURNING *;`;
+
+  return db.query(query, [article_id, username, body]);
+};
