@@ -83,7 +83,6 @@ describe("GET /api/articles/:article_id", () => {
       .expect(200)
       .then((res) => {
         const { article } = res.body;
-        console.log(article);
         const result = {
           article_id: expect.any(Number),
           title: expect.any(String),
