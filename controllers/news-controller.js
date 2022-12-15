@@ -5,6 +5,7 @@ const {
   selectArticleCommentsById,
   insertCommentByArticleId,
   updateArticleVotes,
+  selectUsers,
 } = require("../models/news-model");
 
 exports.getTopics = (req, res, next) => {
@@ -71,9 +72,19 @@ exports.patchArticleVotes = (req, res, next) => {
   const { article_id } = req.params;
   const { inc_votes } = req.body;
   updateArticleVotes(inc_votes, article_id)
-    .then((body) => {
-      const article = body[0];
+    .then((result) => {
+      const article = result[0];
       res.status(200).send({ article });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.getUsers = (req, res, next) => {
+  selectUsers()
+    .then((users) => {
+      res.status(200).send({ users });
     })
     .catch((err) => {
       next(err);

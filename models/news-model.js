@@ -70,3 +70,11 @@ exports.updateArticleVotes = (votes, article_id) => {
     return result.rows;
   });
 };
+
+exports.selectUsers = () => {
+  const query = `SELECT * FROM users;`;
+
+  return db.query(query).then((result) => {
+    return result.rows;
+  });
+};
