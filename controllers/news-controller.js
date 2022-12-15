@@ -58,10 +58,11 @@ exports.postArticleCommentsById = (req, res, next) => {
 
   insertCommentByArticleId(article_id, username, body)
     .then(({ rows }) => {
-      const newComment = rows[0];
-      res.status(201).send({ newComment });
+      const comment = rows[0];
+      res.status(201).send({ comment });
     })
     .catch((err) => {
+      console.log(err);
       next(err);
     });
 };

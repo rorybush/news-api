@@ -84,7 +84,7 @@ describe("GET /api/articles/:article_id", () => {
       .then((res) => {
         const { article } = res.body;
         const result = {
-          article_id: expect.any(Number),
+          article_id: 1,
           title: expect.any(String),
           votes: expect.any(Number),
           topic: expect.any(String),
@@ -171,24 +171,36 @@ describe("POST /api/articles/:article_id/comments", () => {
       .expect(201)
       .send(newComment)
       .then(({ body }) => {
-        expect(body.newComment).toMatchObject({
-          article_id: expect.any(Number),
-          author: expect.any(String),
-          body: expect.any(String),
+        expect(body.comment).toMatchObject({
+          article_id: 1,
+          author: "butter_bridge",
+          body: "test body test123 bananas kiwi apple pear !=+#",
           comment_id: expect.any(Number),
           created_at: expect.any(String),
           votes: expect.any(Number),
         });
       });
   });
-  test("returns status 400 if body or username is not provided", () => {
-    const newComment = {
+  test("returns status 400 if username is not provided", () => {
+    const commentNoUser = {
+      body: "test body test123 bananas kiwi apple pear !=+#",
+    };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .expect(400)
+      .send(commentNoUser)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Username or Body has not been provided.");
+      });
+  });
+  test("returns status 400 if body is not provided", () => {
+    const commentNoBody = {
       username: "butter_bridge",
     };
     return request(app)
       .post("/api/articles/1/comments")
       .expect(400)
-      .send(newComment)
+      .send(commentNoBody)
       .then(({ body }) => {
         expect(body.msg).toBe("Username or Body has not been provided.");
       });
@@ -218,6 +230,19 @@ describe("POST /api/articles/:article_id/comments", () => {
       .send(newComment)
       .then(({ body }) => {
         expect(body.msg).toBe("Invalid ID");
+      });
+  });
+  test("returns status 404 if input is a valid username but it does not exist in the database ", () => {
+    const newComment = {
+      username: "roryb",
+      body: "this username does not exist in the db",
+    };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .expect(404)
+      .send(newComment)
+      .then(({ body }) => {
+        expect(body.msg).toBe("No Username Found");
       });
   });
 });

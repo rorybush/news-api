@@ -46,7 +46,7 @@ exports.selectArticleCommentsById = (article_id) => {
 };
 
 exports.insertCommentByArticleId = (article_id, username, body) => {
-  if (username === undefined || body === undefined) {
+  if (!username || !body) {
     return Promise.reject({
       status: 400,
       msg: "Username or Body has not been provided.",
