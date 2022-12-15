@@ -114,15 +114,14 @@ describe("GET /api/articles/:article_id", () => {
   });
 });
 
-describe("GET /api/articles/:article_id/comments", () => {
+describe.only("GET /api/articles/:article_id/comments", () => {
   test("should return the comments for the article ID provided", () => {
     return request(app)
       .get("/api/articles/1/comments")
       .expect(200)
       .then((res) => {
         const { comments } = res.body;
-        expect(comments).toBeInstanceOf(Array);
-        expect(comments).toHaveLength(11);
+        expect(comments[1]).toHaveLength(11);
         expect.objectContaining({
           comment_id: expect.any(Number),
           votes: expect.any(Number),
@@ -132,7 +131,6 @@ describe("GET /api/articles/:article_id/comments", () => {
         });
       });
   });
-
   test("returns the comments sorted by most recently posted", () => {
     return request(app)
       .get("/api/articles/1/comments")
@@ -148,8 +146,17 @@ describe("GET /api/articles/:article_id/comments", () => {
       .get("/api/articles/9999/comments")
       .expect(404)
       .then((res) => {
-        console.log(res.body);
         expect(res.body).toEqual({ msg: "No Article Found." });
+      });
+  });
+
+  test("returns an empty array if the article has no comments", () => {
+    return request(app)
+      .get("/api/articles/2/comments")
+      .expect(200)
+      .then((res) => {
+        const { comments } = res.body;
+        expect(comments[1]).toEqual([]);
       });
   });
 });

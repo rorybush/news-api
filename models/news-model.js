@@ -41,9 +41,6 @@ exports.selectArticleCommentsById = (article_id) => {
   ORDER BY created_at ASC;`;
 
   return db.query(query, [article_id]).then((result) => {
-    if (result.rowCount === 0) {
-      return Promise.reject({ status: 404, msg: "No Article Found." });
-    }
     return result.rows;
   });
 };

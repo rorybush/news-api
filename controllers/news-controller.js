@@ -39,7 +39,10 @@ exports.getArticlesById = (req, res, next) => {
 
 exports.getArticleCommentsById = (req, res, next) => {
   const { article_id } = req.params;
-  selectArticleCommentsById(article_id)
+  return Promise.all([
+    selectArticlesById(article_id),
+    selectArticleCommentsById(article_id),
+  ])
     .then((comments) => {
       res.status(200).send({ comments });
     })
