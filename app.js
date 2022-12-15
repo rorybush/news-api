@@ -6,6 +6,7 @@ const {
   getArticlesById,
   getArticleCommentsById,
   postArticleCommentsById,
+  patchArticleVotes,
 } = require("./controllers/news-controller");
 const {
   handle404Paths,

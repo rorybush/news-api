@@ -4,6 +4,7 @@ const {
   selectArticlesById,
   selectArticleCommentsById,
   insertCommentByArticleId,
+  updateArticleVotes,
 } = require("../models/news-model");
 
 exports.getTopics = (req, res, next) => {
@@ -57,12 +58,11 @@ exports.postArticleCommentsById = (req, res, next) => {
   const { username, body } = req.body;
 
   insertCommentByArticleId(article_id, username, body)
-    .then(({ rows }) => {
-      const comment = rows[0];
+    .then((body) => {
+      const comment = body.rows[0];
       res.status(201).send({ comment });
     })
     .catch((err) => {
-      console.log(err);
       next(err);
     });
 };
