@@ -66,3 +66,16 @@ exports.postArticleCommentsById = (req, res, next) => {
       next(err);
     });
 };
+
+exports.patchArticleVotes = (req, res, next) => {
+  const { article_id } = req.params;
+  const { inc_votes } = req.body;
+  updateArticleVotes(inc_votes, article_id)
+    .then((body) => {
+      const article = body[0];
+      res.status(200).send({ article });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};

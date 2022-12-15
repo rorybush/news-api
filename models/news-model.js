@@ -59,3 +59,14 @@ exports.insertCommentByArticleId = (article_id, username, body) => {
 
   return db.query(query, [article_id, username, body]);
 };
+
+exports.updateArticleVotes = (votes, article_id) => {
+  const query = `UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;`;
+
+  return db.query(query, [votes, article_id]).then((result) => {
+    if (result.rowCount === 0) {
+      return Promise.reject({ status: 404, msg: "No Article Found." });
+    }
+    return result.rows;
+  });
+};
