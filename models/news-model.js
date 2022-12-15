@@ -33,3 +33,14 @@ exports.selectArticlesById = (article_id) => {
     return result.rows[0];
   });
 };
+
+exports.selectArticleCommentsById = (article_id) => {
+  const query = `SELECT comment_id, votes, created_at, author, body 
+  FROM comments 
+  WHERE article_id = $1
+  ORDER BY created_at ASC;`;
+
+  return db.query(query, [article_id]).then((result) => {
+    return result.rows;
+  });
+};

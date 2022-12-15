@@ -113,3 +113,50 @@ describe("GET /api/articles/:article_id", () => {
       });
   });
 });
+
+describe("GET /api/articles/:article_id/comments", () => {
+  test("should return the comments for the article ID provided", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then((res) => {
+        const { comments } = res.body;
+        expect(comments[1]).toHaveLength(11);
+        expect.objectContaining({
+          comment_id: expect.any(Number),
+          votes: expect.any(Number),
+          created_at: expect.any(String),
+          author: expect.any(String),
+          body: expect.any(String),
+        });
+      });
+  });
+  test("returns the comments sorted by most recently posted", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then((res) => {
+        const { comments } = res.body;
+        expect(comments).toBeSortedBy("created_at");
+      });
+  });
+
+  test("returns 404 error if article id does not exist", () => {
+    return request(app)
+      .get("/api/articles/9999/comments")
+      .expect(404)
+      .then((res) => {
+        expect(res.body).toEqual({ msg: "No Article Found." });
+      });
+  });
+
+  test("returns an empty array if the article has no comments", () => {
+    return request(app)
+      .get("/api/articles/2/comments")
+      .expect(200)
+      .then((res) => {
+        const { comments } = res.body;
+        expect(comments[1]).toEqual([]);
+      });
+  });
+});

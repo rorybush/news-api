@@ -2,6 +2,7 @@ const {
   selectTopics,
   selectArticles,
   selectArticlesById,
+  selectArticleCommentsById,
 } = require("../models/news-model");
 
 exports.getTopics = (req, res, next) => {
@@ -30,6 +31,20 @@ exports.getArticlesById = (req, res, next) => {
   selectArticlesById(article_id)
     .then((article) => {
       res.status(200).send({ article });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.getArticleCommentsById = (req, res, next) => {
+  const { article_id } = req.params;
+  return Promise.all([
+    selectArticlesById(article_id),
+    selectArticleCommentsById(article_id),
+  ])
+    .then((comments) => {
+      res.status(200).send({ comments });
     })
     .catch((err) => {
       next(err);
