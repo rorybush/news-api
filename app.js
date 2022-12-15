@@ -22,6 +22,7 @@ app.get("/api/articles", getArticles);
 app.get("/api/articles/:article_id", getArticlesById);
 app.get("/api/articles/:article_id/comments", getArticleCommentsById);
 app.post("/api/articles/:article_id/comments", postArticleCommentsById);
+app.patch("/api/articles/:article_id", patchArticleVotes);
 
 app.all("*", handle404Paths);
 app.use(handleCustomErrors);

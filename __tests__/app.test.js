@@ -246,3 +246,57 @@ describe("POST /api/articles/:article_id/comments", () => {
       });
   });
 });
+
+describe("PATCH /api/articles/:article_id", () => {
+  test("returns status 200 with the article votes updates", () => {
+    const votes = { inc_votes: 101 };
+    return request(app)
+      .patch("/api/articles/1")
+      .expect(200)
+      .send(votes)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(article).toEqual({
+          article_id: 1,
+          title: "Living in the shadow of a great man",
+          topic: "mitch",
+          author: "butter_bridge",
+          body: "I find this existence challenging",
+          created_at: "2020-07-09T20:11:00.000Z",
+          votes: 201,
+        });
+      });
+  });
+
+  test("returns status 400 if the id for the article is invalid", () => {
+    const votes = { inc_votes: 10 };
+    return request(app)
+      .patch("/api/articles/banana")
+      .expect(400)
+      .send(votes)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid ID");
+      });
+  });
+
+  test("returns status 404 if the article cannot be found", () => {
+    const votes = { inc_votes: 10 };
+    return request(app)
+      .patch("/api/articles/99999")
+      .expect(404)
+      .send(votes)
+      .then(({ body }) => {
+        expect(body.msg).toBe("No Article Found.");
+      });
+  });
+  test("returns status 400 if the vote input is invalid", () => {
+    const votes = { inc_votes: "banana" };
+    return request(app)
+      .patch("/api/articles/1")
+      .expect(400)
+      .send(votes)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid ID");
+      });
+  });
+});
