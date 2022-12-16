@@ -4,8 +4,6 @@ You can view the hosted API here: https://news-api-izsx.onrender.com
 
 ## Cloning the repo
 
----
-
 In order to connect to your database you will need to set up the environment variables. Create two .env files for your project, one for your test database and one for your development database.
 
 You can find the databse names in the sql files. Found at ./db/setup.sql.
@@ -16,13 +14,9 @@ Ensure to gitignore these files if they contain sensitive information.
 
 ## Summary
 
----
-
 This API gives access to articles, comments, topics and users from the news database.
 
 ## Installation
-
----
 
 1. Clone the repository: `git@github.com:rorybush/news-api.git`
 
