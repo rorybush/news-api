@@ -1,6 +1,10 @@
-# Northcoders News API
+# News API
+
+You can view the hosted API here: https://news-api-izsx.onrender.com
 
 ## Cloning the repo
+
+---
 
 In order to connect to your database you will need to set up the environment variables. Create two .env files for your project, one for your test database and one for your development database.
 
@@ -10,58 +14,44 @@ In each file, add PGDATABASE=<database_name_here>
 
 Ensure to gitignore these files if they contain sensitive information.
 
-## Background
+## Summary
 
-We will be building an API for the purpose of accessing application data programmatically. The intention here is to mimic the building of a real world backend service (such as reddit) which should provide this information to the front end architecture.
+---
 
-Your database will be PSQL, and you will interact with it using [node-postgres](https://node-postgres.com/).
+This API gives access to articles, comments, topics and users from the news database.
 
-## Kanban
+## Installation
 
-### Link to your Trello Board here: https://trello.com/b/7yiHe1nI
+---
 
-To keep track of the tasks involved in this project we're going to use a kanban board. Ensure that you work on one _ticket_ at time. You can click on the ticket to find out more information about what is required for the feature. A ticket is not considered complete unless both the happy path and errors response are handled. You can make use of the checklist on each ticket to keep track of the errors you want to handle. You can also make use of [error-handling.md](error-handling.md) to consider the error codes we may wish to respond with.
+1. Clone the repository: `git@github.com:rorybush/news-api.git`
 
-**Please ensure you work through the tickets in numerical order.**
+2. Install the dependencies:
 
-## Git Branching and Pull Requests
+   `npm i`
 
-You will be working on each ticket on a new **branch**.
+   `npm i express`
 
-To create and switch to a new git branch use the command:
+   `npm i dotenv`
 
-```
-git checkout -b <new branch name>
-```
+   `npm i pg`
 
-This will create a branch and move over to that branch. (Omit the `-b` flag if you wish to switch to an already existing branch).
+   `npm i -D jest`
 
-We recommend that you name the branch after the number assigned to each ticket via the header. eg. `ncnews-1`
+   `npm i -D pg-format`
 
-When pushing the branch to git hub ensure that you make reference to the branch you are pushing to on the remote.
+   `npm i -D supertest`
 
-```
-git push origin <branch name>
-```
+   `npm i -D jest-sorted`
 
-From github you can make a pull request and share the link and ticket number via a pull request specific nchelp using the command `nchelp pr`. A tutor will swing by to review your code. Ensure that you keep your trello up to date whilst you await the PR approval. Regular `nchelp` will be available for when you need support.
+3. Create 2 ENV files. Add `PGDATABASE=<database_name>` to the `.env.test` and `.env.development` files.
 
-Once a pull request been accepted be sure to switch back to the main branch and pull down the updated changes.
+4. Seed the local database: `npm run setup-dbs` `npm run seed`
 
-```
-git checkout main
+5. Use the following command to run the test: `npm t`
 
-git pull origin main
-```
+## Minimum Requirements
 
-You can tidy up your local branches once they have been pull into main by deleting them:
+Node.js `18.10.0`
 
-```
-git branch -D <local branch>
-```
-
-## Husky
-
-To ensure we are not commiting broken code this project makes use of git hooks. Git hooks are scripts triggered during certain events in the git lifecycle. Husky is a popular package which allows us to set up and maintain these scripts. This project makes use a _pre-commit hook_. When we attempt to commit our work, the script defined in the `pre-commit` file will run. If any of our tests fail than the commit will be aborted.
-
-The [Husky documentation](https://typicode.github.io/husky/#/) explains how to configure Husky for your own project as well as creating your own custom hooks.\_
+Postgres `^8.7.3`
