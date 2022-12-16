@@ -111,6 +111,15 @@ describe("GET /api/articles/:article_id", () => {
         expect(res.body).toEqual({ msg: "Invalid ID" });
       });
   });
+  test("it should return status 200 and each article should now have a comment_count key", () => {
+    return request(app)
+      .get("/api/articles/1")
+      .expect(200)
+      .then((res) => {
+        const { article } = res.body;
+        expect(article).toHaveProperty("comment_count");
+      });
+  });
 });
 
 describe("GET /api/articles/:article_id/comments", () => {
