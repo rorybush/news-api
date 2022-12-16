@@ -8,6 +8,7 @@ const {
   postArticleCommentsById,
   patchArticleVotes,
   getUsers,
+  deleteCommentById,
 } = require("./controllers/news-controller");
 const {
   handle404Paths,
@@ -25,6 +26,8 @@ app.get("/api/articles/:article_id/comments", getArticleCommentsById);
 app.post("/api/articles/:article_id/comments", postArticleCommentsById);
 app.patch("/api/articles/:article_id", patchArticleVotes);
 app.get("/api/users", getUsers);
+app.delete("/api/comments/:comment_id", deleteCommentById);
+
 app.all("*", handle404Paths);
 app.use(handleCustomErrors);
 app.use(handlePsqlErrors);

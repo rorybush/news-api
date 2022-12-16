@@ -405,3 +405,30 @@ describe("GET /api/articles (queries)", () => {
     });
   });
 });
+
+describe("DELETE /api/comments/:comment_id", () => {
+  test("returns status 204 and deletes the comment", () => {
+    return request(app)
+      .delete("/api/comments/1")
+      .expect(204)
+      .then(({ body }) => {
+        expect(body).toEqual({});
+      });
+  });
+  test("returns status 404 if the comment id cannot be found", () => {
+    return request(app)
+      .delete("/api/comments/9999")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("No Comment Found");
+      });
+  });
+  test("returns status 400 if the comment id is invalid", () => {
+    return request(app)
+      .delete("/api/comments/bananas")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid ID");
+      });
+  });
+});
