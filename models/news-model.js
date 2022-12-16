@@ -30,19 +30,19 @@ exports.selectArticles = (topic, sort_by = "created_at", order = "DESC") => {
   if (validTopicQueries.includes(topic)) {
     query += ` WHERE articles.topic = '${topic}'`;
   } else if (topic) {
-    return Promise.reject({ status: 400, msg: "Invalid Topic" });
+    return Promise.reject({ status: 404, msg: "Invalid Topic" });
   }
 
   if (validSortByQueries.includes(sort_by)) {
     query += ` GROUP BY articles.article_id ORDER BY ${sort_by}`;
   } else {
-    return Promise.reject({ status: 400, msg: "Invalid sort_by" });
+    return Promise.reject({ status: 404, msg: "Invalid sort_by" });
   }
 
   if (validOrderByQueries.includes(order)) {
     query += ` ${order}`;
   } else {
-    return Promise.reject({ status: 400, msg: "Invalid order" });
+    return Promise.reject({ status: 404, msg: "Invalid order" });
   }
 
   query += `;`;

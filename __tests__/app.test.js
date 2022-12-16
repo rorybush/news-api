@@ -331,6 +331,7 @@ describe("GET /api/articles (queries)", () => {
         .expect(200)
         .then(({ body }) => {
           const { articles } = body;
+          expect(articles).toHaveLength(1);
           articles.forEach((article) => {
             expect(article).toEqual(
               expect.objectContaining({
@@ -340,12 +341,21 @@ describe("GET /api/articles (queries)", () => {
           });
         });
     });
-    test("returns status 400 if an invalid topic has been entered", () => {
+    test("returns status 404 not found if an invalid topic has been entered", () => {
       return request(app)
         .get("/api/articles?topic=bananas")
-        .expect(400)
+        .expect(404)
         .then(({ body }) => {
           expect(body.msg).toBe("Invalid Topic");
+        });
+    });
+    test("return status 200 and an empty array if the topic exists but there are no articles", () => {
+      return request(app)
+        .get("/api/articles?topic=paper")
+        .expect(200)
+        .then(({ body }) => {
+          const { articles } = body;
+          expect(articles).toEqual([]);
         });
     });
   });
@@ -368,18 +378,18 @@ describe("GET /api/articles (queries)", () => {
           expect(articles).toBeSortedBy("author");
         });
     });
-    test("400 - invalid sort by query", () => {
+    test("404 - invalid sort by query", () => {
       return request(app)
         .get("/api/articles?sort_by=kiwi")
-        .expect(400)
+        .expect(404)
         .then(({ body }) => {
           expect(body.msg).toBe("Invalid sort_by");
         });
     });
-    test("400 - invalid order by query", () => {
+    test("404 - invalid order by query", () => {
       return request(app)
         .get("/api/articles?sort_by=author&order=banana")
-        .expect(400)
+        .expect(404)
         .then(({ body }) => {
           expect(body.msg).toBe("Invalid order");
         });
