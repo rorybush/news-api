@@ -20,23 +20,7 @@ This API gives access to articles, comments, topics and users from the news data
 
 1. Clone the repository: `git@github.com:rorybush/news-api.git`
 
-2. Install the dependencies:
-
-   `npm i`
-
-   `npm i express`
-
-   `npm i dotenv`
-
-   `npm i pg`
-
-   `npm i -D jest`
-
-   `npm i -D pg-format`
-
-   `npm i -D supertest`
-
-   `npm i -D jest-sorted`
+2. Install the dependencies: `npm i`
 
 3. Create 2 ENV files. Add `PGDATABASE=<database_name>` to the `.env.test` and `.env.development` files.
 
