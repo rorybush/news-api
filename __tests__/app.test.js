@@ -322,3 +322,67 @@ describe("GET /api/users", () => {
       });
   });
 });
+
+describe("GET /api/articles (queries)", () => {
+  describe("topic type query", () => {
+    test("return status 200 and filters the articles by topic", () => {
+      return request(app)
+        .get("/api/articles?topic=cats")
+        .expect(200)
+        .then(({ body }) => {
+          const { articles } = body;
+          articles.forEach((article) => {
+            expect(article).toEqual(
+              expect.objectContaining({
+                topic: "cats",
+              })
+            );
+          });
+        });
+    });
+    test("returns status 400 if an invalid topic has been entered", () => {
+      return request(app)
+        .get("/api/articles?topic=bananas")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Invalid Topic");
+        });
+    });
+  });
+  describe("sort by & order by queries", () => {
+    test("200 - sorting by title returns the titles in descending order", () => {
+      return request(app)
+        .get("/api/articles?sort_by=title")
+        .expect(200)
+        .then(({ body }) => {
+          const { articles } = body;
+          expect(articles).toBeSortedBy("title", { descending: true });
+        });
+    });
+    test("200 - sort by author in ascending order", () => {
+      return request(app)
+        .get("/api/articles?sort_by=author&order=ASC")
+        .expect(200)
+        .then(({ body }) => {
+          const { articles } = body;
+          expect(articles).toBeSortedBy("author");
+        });
+    });
+    test("400 - invalid sort by query", () => {
+      return request(app)
+        .get("/api/articles?sort_by=kiwi")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Invalid sort_by");
+        });
+    });
+    test("400 - invalid order by query", () => {
+      return request(app)
+        .get("/api/articles?sort_by=author&order=banana")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Invalid order");
+        });
+    });
+  });
+});
