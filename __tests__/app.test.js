@@ -3,6 +3,7 @@ const db = require("../db/connection");
 const app = require("../app");
 const testData = require("../db/data/test-data");
 const seed = require("../db/seeds/seed");
+const { TestWatcher } = require("jest");
 
 beforeEach(() => seed(testData));
 
@@ -429,6 +430,45 @@ describe("DELETE /api/comments/:comment_id", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Invalid ID");
+      });
+  });
+});
+
+describe("GET /api/", () => {
+  test("returns status 200 and the /api contents", () => {
+    return request(app)
+      .get("/api/")
+      .expect(200)
+      .then(({ body }) => {
+        const { endpoints } = body;
+        expect(endpoints).toMatchObject({
+          "GET /api": {
+            description:
+              "serves up a json representation of all the available endpoints of the api",
+          },
+          "GET /api/topics": {
+            description: "serves an array of all topics",
+            queries: [],
+            exampleResponse: {
+              topics: [{ slug: "football", description: "Footie!" }],
+            },
+          },
+          "GET /api/articles": {
+            description: "serves an array of all topics",
+            queries: ["author", "topic", "sort_by", "order"],
+            exampleResponse: {
+              articles: [
+                {
+                  title: "Seafood substitutions are increasing",
+                  topic: "cooking",
+                  author: "weegembump",
+                  body: "Text from the article..",
+                  created_at: 1527695953341,
+                },
+              ],
+            },
+          },
+        });
       });
   });
 });
