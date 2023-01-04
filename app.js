@@ -1,22 +1,25 @@
-const express = require("express");
-const app = express();
-const {
-  getTopics,
-  getArticles,
-  getArticlesById,
-  getArticleCommentsById,
-  postArticleCommentsById,
-  patchArticleVotes,
-  getUsers,
-  deleteCommentById,
-  getApi,
-} = require("./controllers/news-controller");
+const { getApi } = require("./controllers/api-controller");
 const {
   handle404Paths,
   handleCustomErrors,
   handle500s,
   handlePsqlErrors,
 } = require("./controllers/error.handler");
+const { getTopics } = require("./controllers/topics-controller");
+const {
+  getArticles,
+  getArticlesById,
+  patchArticleVotes,
+} = require("./controllers/articles-controller");
+const {
+  getArticleCommentsById,
+  postArticleCommentsById,
+  deleteCommentById,
+} = require("./controllers/comment-controller");
+const { getUsers } = require("./controllers/users-controller");
+
+const express = require("express");
+const app = express();
 
 app.use(express.json());
 
