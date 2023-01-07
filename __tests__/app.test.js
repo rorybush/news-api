@@ -500,3 +500,41 @@ describe("GET /api/users/:username", () => {
       });
   });
 });
+
+describe("PATCH /api/comments/:comment_id", () => {
+  test("returns status 200 and increases the vote count", () => {
+    return request(app)
+      .patch("/api/comments/1")
+      .expect(200)
+      .send({ inc_votes: 1 })
+      .then(({ body }) => {
+        console.log(body.comment);
+        expect(body.comment).toMatchObject({
+          comment_id: expect.any(Number),
+          body: expect.any(String),
+          article_id: expect.any(Number),
+          author: expect.any(String),
+          votes: expect.any(Number),
+          created_at: expect.any(String),
+        });
+      });
+  });
+  test("returns status 400 bad request - invalid id", () => {
+    return request(app)
+      .patch("/api/comments/bananas")
+      .expect(400)
+      .send({ inc_votes: 1 })
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Invalid ID" });
+      });
+  });
+  test('Status: 404 "Not Found" - Comment does not exist', () => {
+    return request(app)
+      .patch("/api/comments/99999")
+      .expect(404)
+      .send({ inc_votes: 1 })
+      .then(({ body }) => {
+        expect(body.msg).toBe("No comment found");
+      });
+  });
+});

@@ -3,6 +3,7 @@ const {
   insertCommentByArticleId,
   selectArticlesById,
   removeCommentById,
+  updateCommentVotes,
 } = require("../models/news-model");
 
 exports.getArticleCommentsById = (req, res, next) => {
@@ -40,6 +41,19 @@ exports.deleteCommentById = (req, res, next) => {
       res.status(204).send();
     })
     .catch((err) => {
+      next(err);
+    });
+};
+
+exports.updateVoteCount = (req, res, next) => {
+  const { comment_id } = req.params;
+  const { inc_votes } = req.body;
+  updateCommentVotes(comment_id, inc_votes)
+    .then((comment) => {
+      res.status(200).send({ comment });
+    })
+    .catch((err) => {
+      console.log(err);
       next(err);
     });
 };
