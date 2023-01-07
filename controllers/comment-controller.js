@@ -53,7 +53,6 @@ exports.updateVoteCount = (req, res, next) => {
       res.status(200).send({ comment });
     })
     .catch((err) => {
-      console.log(err);
       next(err);
     });
 };

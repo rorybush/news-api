@@ -508,7 +508,6 @@ describe("PATCH /api/comments/:comment_id", () => {
       .expect(200)
       .send({ inc_votes: 1 })
       .then(({ body }) => {
-        console.log(body.comment);
         expect(body.comment).toMatchObject({
           comment_id: expect.any(Number),
           body: expect.any(String),
