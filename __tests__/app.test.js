@@ -472,3 +472,31 @@ describe("GET /api/", () => {
       });
   });
 });
+
+describe("GET /api/users/:username", () => {
+  test("returns status 200 and receives back a user with username, avatar_url and name", () => {
+    return request(app)
+      .get("/api/users/rogersop")
+      .expect(200)
+      .then(({ body }) => {
+        const { user } = body;
+
+        expect(user).toMatchObject([
+          {
+            username: "rogersop",
+            name: "paul",
+            avatar_url:
+              "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4",
+          },
+        ]);
+      });
+  });
+  test("returns status 404 and  returns user not found", () => {
+    return request(app)
+      .get("/api/users/bananas")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("No user found");
+      });
+  });
+});
