@@ -7,7 +7,13 @@ exports.selectTopics = () => {
   });
 };
 
-exports.selectArticles = (topic, sort_by = "created_at", order = "DESC") => {
+exports.selectArticles = (
+  topic,
+  sort_by = "created_at",
+  order = "DESC",
+  limit = 10,
+  p
+) => {
   const validSortByQueries = [
     "title",
     "topic",
@@ -43,6 +49,10 @@ exports.selectArticles = (topic, sort_by = "created_at", order = "DESC") => {
     query += ` ${order}`;
   } else {
     return Promise.reject({ status: 404, msg: "Invalid order" });
+  }
+
+  if (p) {
+    query += ` LIMIT ${limit} OFFSET ${limit * (p - 1)};`;
   }
 
   query += `;`;

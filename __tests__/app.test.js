@@ -75,6 +75,14 @@ describe("GET /api/articles", () => {
         expect(articles).toBeSortedBy("created_at", { descending: true });
       });
   });
+  test("returns status 200 and the requested article limit", () => {
+    return request(app)
+      .get("/api/articles?p=2")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.articles).toHaveLength(2);
+      });
+  });
 });
 
 describe("GET /api/articles/:article_id", () => {
