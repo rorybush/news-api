@@ -537,3 +537,42 @@ describe("PATCH /api/comments/:comment_id", () => {
       });
   });
 });
+
+describe("POST /api/articles", () => {
+  test("returns status 201 and creates the newly created article", () => {
+    const newArticle = {
+      title: "Living in the shadow of a great man",
+      topic: "mitch",
+      author: "butter_bridge",
+      body: "I find this existence challenging",
+    };
+    return request(app)
+      .post("/api/articles")
+      .expect(201)
+      .send(newArticle)
+      .then((res) => {
+        expect(res.body.article).toBeInstanceOf(Object);
+        expect(res.body.article).toEqual({
+          article_id: expect.any(Number),
+          title: "Living in the shadow of a great man",
+          body: "I find this existence challenging",
+          votes: expect.any(Number),
+          topic: "mitch",
+          author: "butter_bridge",
+          created_at: expect.any(String),
+        });
+      });
+  });
+  test("returns status 400 if username/title/body/topic is not provided", () => {
+    const newArticle = {
+      title: "frogs are amphibians",
+    };
+    return request(app)
+      .post("/api/articles")
+      .send(newArticle)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("The Input is Invalid");
+      });
+  });
+});

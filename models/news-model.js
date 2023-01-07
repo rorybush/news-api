@@ -147,3 +147,14 @@ exports.updateCommentVotes = (comment_id, vote) => {
     return rows[0];
   });
 };
+
+exports.insertArticle = (title, topic, author, body) => {
+  const query = `INSERT INTO articles
+  (author, topic, title, body)
+  VALUES ($1, $2, $3, $4)
+  RETURNING *;`;
+
+  return db.query(query, [author, topic, title, body]).then((res) => {
+    return res.rows[0];
+  });
+};

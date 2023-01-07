@@ -21,6 +21,9 @@ exports.handlePsqlErrors = (err, req, res, next) => {
       res.status(404).send({ msg: "No Article Found" });
     }
   }
+  if (err.code === "23502") {
+    res.status(400).send({ msg: "The Input is Invalid" });
+  }
 };
 exports.handle500s = (err, req, res, next) => {
   res.status(500).send({ msg: "Server error." });
