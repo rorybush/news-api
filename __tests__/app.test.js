@@ -584,3 +584,30 @@ describe("POST /api/articles", () => {
       });
   });
 });
+
+describe("DELETE /api/articles/:article_id", () => {
+  test("returns status 204 and deletes the article", () => {
+    return request(app)
+      .delete("/api/articles/4")
+      .expect(204)
+      .then(({ body }) => {
+        return body;
+      });
+  });
+  test("returns status 404 if the path is invalid", () => {
+    return request(app)
+      .delete("/api/artiiccle/3")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Path not found.");
+      });
+  });
+  test("retirns status 404 if the article can not be found", () => {
+    return request(app)
+      .delete("/api/articles/9999")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article Not Found");
+      });
+  });
+});

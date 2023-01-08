@@ -148,7 +148,7 @@ exports.selectUserByUsername = (username) => {
 };
 
 exports.updateCommentVotes = (comment_id, vote) => {
-  const query = `UPDATE "comments" SET votes = votes + $1 WHERE "comment_id" = $2 RETURNING *;`;
+  const query = `UPDATE comments SET votes = votes + $1 WHERE comment_id = $2 RETURNING *;`;
 
   return db.query(query, [vote, comment_id]).then(({ rows }) => {
     if (!rows.length) {
@@ -166,5 +166,15 @@ exports.insertArticle = (title, topic, author, body) => {
 
   return db.query(query, [author, topic, title, body]).then((res) => {
     return res.rows[0];
+  });
+};
+
+exports.removeArticle = (article_id) => {
+  const query = `DELETE FROM articles WHERE article_id = $1 RETURNING *;`;
+
+  return db.query(query, [article_id]).then((res) => {
+    if (!res.rowCount) {
+      return Promise.reject({ status: 404, msg: "Article Not Found" });
+    }
   });
 };
