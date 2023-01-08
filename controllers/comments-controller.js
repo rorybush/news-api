@@ -1,10 +1,10 @@
 const {
   selectArticleCommentsById,
   insertCommentByArticleId,
-  selectArticlesById,
   removeCommentById,
   updateCommentVotes,
-} = require("../models/news-model");
+} = require("../models/comments-model");
+const { selectArticlesById } = require("../models/articles-model");
 
 exports.getArticleCommentsById = (req, res, next) => {
   const { article_id } = req.params;

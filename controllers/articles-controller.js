@@ -4,7 +4,7 @@ const {
   updateArticleVotes,
   insertArticle,
   removeArticle,
-} = require("../models/news-model");
+} = require("../models/articles-model");
 
 exports.getArticles = (req, res, next) => {
   const { topic, sort_by, order, limit, p } = req.query;
