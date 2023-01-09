@@ -1,6 +1,6 @@
 # News API
 
-You can view the hosted API here: https://news-api-izsx.onrender.com
+You can view the hosted API here: https://news-api-izsx.onrender.com/api/
 
 ## Cloning the repo
 
