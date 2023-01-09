@@ -5,6 +5,10 @@ const {
   handle500s,
   handlePsqlErrors,
 } = require("./controllers/error.handler");
+
+const cors = require("cors");
+app.use(cors());
+
 const apiRouter = require("./routes");
 const express = require("express");
 
