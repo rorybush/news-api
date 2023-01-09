@@ -20,7 +20,7 @@ exports.selectArticles = (
   const validTopicQueries = ["cats", "paper", "mitch"];
 
   let query = `
-    SELECT articles.article_id, articles.title, articles.author, articles.topic, articles.created_at, articles.votes, 
+    SELECT articles.article_id, articles.title, articles.author, articles.topic, articles.body, articles.created_at, articles.votes, 
     COUNT(comments.article_id)::INTEGER AS comment_count
     FROM articles  
     LEFT JOIN comments 
@@ -56,7 +56,7 @@ exports.selectArticles = (
 };
 
 exports.selectArticlesById = (article_id) => {
-  const query = `SELECT articles.article_id, articles.title, articles.author, articles.topic, articles.created_at, articles.votes, 
+  const query = `SELECT articles.article_id, articles.title, articles.author, articles.topic, articles.body, articles.created_at, articles.votes, 
     COUNT(comments.article_id)::INTEGER 
     AS comment_count
     FROM articles  
