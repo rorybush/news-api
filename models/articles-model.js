@@ -17,7 +17,14 @@ exports.selectArticles = (
     "comment_count",
   ];
   const validOrderByQueries = ["ASC", "DESC"];
-  const validTopicQueries = ["cats", "paper", "mitch"];
+  const validTopicQueries = [
+    "cats",
+    "paper",
+    "mitch",
+    "coding",
+    "cooking",
+    "football",
+  ];
 
   let query = `
     SELECT articles.article_id, articles.title, articles.author, articles.topic, articles.body, articles.created_at, articles.votes, 
